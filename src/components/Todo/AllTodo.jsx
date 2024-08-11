@@ -3,7 +3,7 @@ import { TodoCard } from "./TodoCard";
 export const AllTodo = ({ todo, setTodo, handleIsFormActive }) => {
   return (
     <>
-      <header className="w-full flex justify-between">
+      <header className="w-full sm:flex sm:justify-between">
         <div>
           <h2 className="text-2xl font-semibold text-slate-900">
             You've{" "}
@@ -13,7 +13,7 @@ export const AllTodo = ({ todo, setTodo, handleIsFormActive }) => {
             Todo
           </h2>
         </div>
-        <div>
+        <div className="mt-3 sm:mt-0">
           <button
             className="w-40 h-12 bg-todo-700 text-todo-20 rounded-lg font-medium hover:bg-todo-600 transition-all duration-200"
             onClick={handleIsFormActive}
