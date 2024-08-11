@@ -163,8 +163,8 @@ export const Todos = ({ active, setActive }) => {
         </div>
       </div>
 
-      <div className="lg:w-[75%] lg:absolute lg:left-[25%] md:w-[70%] md:absolute md:left-[30%] w-full h-full bg-slate-100 border-r-[1px] border-slate-300 p-5 right-side">
-        <div className="w-full h-full p-5 flex flex-col gap-5 bg-todo-20 rounded-2xl">
+      <div className="lg:w-[75%] lg:absolute lg:left-[25%] md:w-[70%] md:absolute md:left-[30%] w-full h-full bg-slate-100 border-r-[1px] border-slate-300 sm:p-5 right-side">
+        <div className="w-full h-full p-5 flex flex-col gap-5 bg-todo-20 sm:rounded-2xl">
           {activeTab === "all" && (
             <AllTodo
               todo={todo}
