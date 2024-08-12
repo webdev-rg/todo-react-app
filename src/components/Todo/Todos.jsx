@@ -5,9 +5,9 @@ import { FaRegStar } from "react-icons/fa";
 import { FaRegCheckCircle } from "react-icons/fa";
 
 import { AllTodo } from "./AllTodo";
-import { Completed } from "./Completed";
-import { Deleted } from "./Deleted";
-import { Starred } from "./Starred";
+import { Completed } from "../CompletedTodo/Completed";
+import { Deleted } from "../DeletedTodo/Deleted";
+import { Starred } from "../StarredTodo/Starred";
 
 export const Todos = ({ active, setActive }) => {
   const sectionHeight = {
@@ -15,11 +15,12 @@ export const Todos = ({ active, setActive }) => {
   };
 
   const [isForm, setIsForm] = useState(false);
+  const [isUpdate, setIsUpdate] = useState(false);
+  const [isStarred, setIsStarred] = useState(false);
   const [activeTab, setActiveTab] = useState("all");
   const [id, setId] = useState(0);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [isUpdate, setIsUpdate] = useState(false);
 
   const handleIsFormActive = () => {
     setIsForm(!isForm);
@@ -30,32 +31,19 @@ export const Todos = ({ active, setActive }) => {
 
   const date = new Date();
 
-  const [todo, setTodo] = useState([
-    {
-      id: 1,
-      title: "First Task",
-      description:
-        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-      date: `${date.getFullYear()}-${
-        date.getMonth() < 10 ? "0" + date.getMonth() : date.getMonth()
-      }-${date.getDate() < 10 ? "0" + date.getDate() : date.getDate()}`,
-      time: `${date.getHours()}-${
-        date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes()
-      }-${
-        date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds()
-      }`,
-    },
-  ]);
+  const [todo, setTodo] = useState([]);
+  const [deletedTodo, setDeletedTodo] = useState([]);
+  const [completedTodo, setCompletedTodo] = useState([]);
+  const [starredTodo, setStarredTodo] = useState([]);
 
   const handleClearInputs = () => {
     setTitle("");
     setDescription("");
-  }
+  };
 
   const handleSaveTodo = (e) => {
     e.preventDefault();
 
-    const saveTodo = [...todo];
     const newTodo = {
       id: todo.length + 1,
       title: title,
@@ -68,17 +56,13 @@ export const Todos = ({ active, setActive }) => {
       }-${
         date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds()
       }`,
+      isStarred: false,
     };
 
-    saveTodo.push(newTodo);
+    const saveTodo = [...todo, newTodo];
     setTodo(saveTodo);
     setIsForm(false);
     handleClearInputs();
-  };
-
-  const handleDeleteTodo = (id) => {
-    const deleteTodo = todo.filter((item) => item.id !== id);
-    setTodo(deleteTodo);
   };
 
   const handleEditTodo = (id) => {
@@ -113,6 +97,62 @@ export const Todos = ({ active, setActive }) => {
     setIsUpdate(false);
     setIsForm(false);
     handleClearInputs();
+  };
+
+  const handleDeleteTodo = (id) => {
+    const deletedItem = todo.find((item) => item.id === id);
+
+    if (deletedItem) {
+      setDeletedTodo((prevDeletedTodos) => {
+        const newDeletedTodos = [...prevDeletedTodos, deletedItem];
+        return newDeletedTodos;
+      });
+
+      const updatedTodos = todo.filter((item) => item.id !== id);
+      setTodo(updatedTodos);
+    } else {
+      console.error("Todo not found!");
+    }
+  };
+
+  const handleRestoreDeletedTodo = (id) => {
+    const restoredItem = deletedTodo.find((item) => item.id === id);
+
+    if (restoredItem) {
+      setTodo([...todo, restoredItem]);
+      setDeletedTodo(deletedTodo.filter((item) => item.id !== id));
+    } else {
+      console.error("Error");
+    }
+  };
+
+  const handleCompletedTodo = (id) => {
+    const completedTodo = todo.find((item) => item.id === id);
+
+    if (completedTodo) {
+      setCompletedTodo((prevCompletedTodos) => {
+        const newCompletedTodos = [...prevCompletedTodos, completedTodo];
+        return newCompletedTodos;
+      });
+
+      const updatedTodos = todo.filter((item) => item.id !== id);
+      setTodo(updatedTodos);
+    } else {
+      console.error("Todo not found!");
+    }
+  };
+
+  const handleStarredTodo = (id) => {
+    const updatedTodos = todo.map((item) => {
+      if (item.id === id) {
+        return { ...item, isStarred: !item.isStarred };
+      }
+      return item;
+    });
+    setTodo(updatedTodos);
+
+    const newStarredTodos = updatedTodos.filter((item) => item.isStarred);
+    setStarredTodo(newStarredTodos);
   };
 
   return (
@@ -186,13 +226,23 @@ export const Todos = ({ active, setActive }) => {
               todo={todo}
               setTodo={setTodo}
               handleIsFormActive={handleIsFormActive}
-              deleteTodo={handleDeleteTodo}
+              completeTodo={handleCompletedTodo}
+              starredTodo={handleStarredTodo}
               editTodo={handleEditTodo}
+              deleteTodo={handleDeleteTodo}
+              isStarred={isStarred}
             />
           )}
-          {activeTab === "starred" && <Starred />}
-          {activeTab === "completed" && <Completed />}
-          {activeTab === "deleted" && <Deleted />}
+          {activeTab === "starred" && <Starred starredTodo={starredTodo} />}
+          {activeTab === "completed" && (
+            <Completed completedTodo={completedTodo} />
+          )}
+          {activeTab === "deleted" && (
+            <Deleted
+              deletedTodo={deletedTodo}
+              restoreTodo={handleRestoreDeletedTodo}
+            />
+          )}
         </div>
       </div>
       <div
@@ -201,16 +251,16 @@ export const Todos = ({ active, setActive }) => {
           isForm ? "form-container" : "hidden"
         }`}
       >
-        <div className="w-[500px] p-5 bg-todo-20 border border-todo-700 rounded-2xl flex flex-col gap-3 relative">
-          <div className="absolute right-5 top-5" onClick={handleIsFormDisable}>
-            <LiaTimesSolid className="text-2xl cursor-pointer" />
-          </div>
+        <div className="absolute right-28 top-5" onClick={handleIsFormDisable}>
+          <LiaTimesSolid className="text-2xl cursor-pointer" />
+        </div>
+        <div className="w-[500px] px-5 py-7 bg-todo-20 border border-todo-700 rounded-2xl flex flex-col gap-3 relative">
           <div className="text-center">
             <h1 className="text-2xl font-semibold text-todo-700">
               Add New Todo
             </h1>
           </div>
-          <form className="w-full flex flex-col gap-3">
+          <form className="w-full flex flex-col gap-5">
             <div className="flex flex-col gap-2">
               <label className="text-xl font-semibold" htmlFor="todo-title">
                 Title
@@ -234,7 +284,7 @@ export const Todos = ({ active, setActive }) => {
                 Description
               </label>
               <textarea
-                className="w-full h-28 border p-3 text-lg focus:border-todo-700 valid:border-todo-700 border-slate-400 rounded-xl transition-all duration-200"
+                className="w-full h-32 border p-3 text-lg focus:border-todo-700 valid:border-todo-700 border-slate-400 rounded-xl transition-all duration-200"
                 type="text"
                 name="todo-title"
                 id="todo-title"
