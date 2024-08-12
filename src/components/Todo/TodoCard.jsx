@@ -3,7 +3,7 @@ import { GoCheckCircle, GoTrash } from "react-icons/go";
 import { FaRegStar } from "react-icons/fa";
 import { FiEdit3 } from "react-icons/fi";
 
-export const TodoCard = ({ title, description, date, time }) => {
+export const TodoCard = ({ id, title, description, date, time, deleteTodo, editTodo }) => {
   return (
     <div className="w-full p-5 flex flex-col gap-5 bg-todo-20 border border-slate-300 rounded-2xl">
       <div className="title">
@@ -25,11 +25,15 @@ export const TodoCard = ({ title, description, date, time }) => {
             <FaRegStar />
             Starred
           </button>
-          <button className="px-4 py-2 flex items-center gap-1 bg-green-700 rounded-md text-todo-20 hover:bg-green-600 transition-all duration-200">
+          <button className="px-4 py-2 flex items-center gap-1 bg-green-700 rounded-md text-todo-20 hover:bg-green-600 transition-all duration-200"
+          onClick={() => editTodo(id)}
+          >
             <FiEdit3 />
             Edit
           </button>
-          <button className="px-4 py-2 flex items-center gap-1 bg-red-700 rounded-md text-todo-20 hover:bg-red-600 transition-all duration-200">
+          <button className="px-4 py-2 flex items-center gap-1 bg-red-700 rounded-md text-todo-20 hover:bg-red-600 transition-all duration-200"
+            onClick={() => deleteTodo(id)}
+          >
             <GoTrash />
             Delete
           </button>

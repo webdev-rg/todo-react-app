@@ -16,6 +16,10 @@ export const Todos = ({ active, setActive }) => {
 
   const [isForm, setIsForm] = useState(false);
   const [activeTab, setActiveTab] = useState("all");
+  const [id, setId] = useState(0);
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [isUpdate, setIsUpdate] = useState(false);
 
   const handleIsFormActive = () => {
     setIsForm(!isForm);
@@ -31,63 +35,7 @@ export const Todos = ({ active, setActive }) => {
       id: 1,
       title: "First Task",
       description:
-        "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Eaquerepellat, aspernatur illo consectetur, veritatis praesentium dignissimos ut reiciendis id, nemo nam.",
-      date: `${date.getFullYear()}-${
-        date.getMonth() < 10 ? "0" + date.getMonth() : date.getMonth()
-      }-${date.getDate() < 10 ? "0" + date.getDate() : date.getDate()}`,
-      time: `${date.getHours()}-${
-        date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes()
-      }-${
-        date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds()
-      }`,
-    },
-    {
-      id: 2,
-      title: "Second Task",
-      description:
-        "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Eaquerepellat, aspernatur illo consectetur, veritatis praesentium dignissimos ut reiciendis id, nemo nam. Ullam perspiciatis deserunt maxime eius eum magnam nesciunt, asperiores repudiandae numquam",
-      date: `${date.getFullYear()}-${
-        date.getMonth() < 10 ? "0" + date.getMonth() : date.getMonth()
-      }-${date.getDate() < 10 ? "0" + date.getDate() : date.getDate()}`,
-      time: `${date.getHours()}-${
-        date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes()
-      }-${
-        date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds()
-      }`,
-    },
-    {
-      id: 3,
-      title: "Third Task",
-      description:
-        "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Eaquerepellat, aspernatur illo consectetur, veritatis praesentium dignissimos ut reiciendis id, nemo nam. Ullam perspiciatis deserunt maxime eius eum magnam nesciunt, asperiores repudiandae numquam",
-      date: `${date.getFullYear()}-${
-        date.getMonth() < 10 ? "0" + date.getMonth() : date.getMonth()
-      }-${date.getDate() < 10 ? "0" + date.getDate() : date.getDate()}`,
-      time: `${date.getHours()}-${
-        date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes()
-      }-${
-        date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds()
-      }`,
-    },
-    {
-      id: 4,
-      title: "Fourth Task",
-      description:
-        "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Eaquerepellat, aspernatur illo consectetur, veritatis praesentium dignissimos ut reiciendis id, nemo nam. Ullam perspiciatis deserunt maxime eius eum magnam nesciunt, asperiores repudiandae numquam",
-      date: `${date.getFullYear()}-${
-        date.getMonth() < 10 ? "0" + date.getMonth() : date.getMonth()
-      }-${date.getDate() < 10 ? "0" + date.getDate() : date.getDate()}`,
-      time: `${date.getHours()}-${
-        date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes()
-      }-${
-        date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds()
-      }`,
-    },
-    {
-      id: 5,
-      title: "Fifth Task",
-      description:
-        "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Eaquerepellat, aspernatur illo consectetur, veritatis praesentium dignissimos ut reiciendis id, nemo nam. Ullam perspiciatis deserunt maxime eius eum magnam nesciunt, asperiores repudiandae numquam",
+        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
       date: `${date.getFullYear()}-${
         date.getMonth() < 10 ? "0" + date.getMonth() : date.getMonth()
       }-${date.getDate() < 10 ? "0" + date.getDate() : date.getDate()}`,
@@ -98,6 +46,74 @@ export const Todos = ({ active, setActive }) => {
       }`,
     },
   ]);
+
+  const handleClearInputs = () => {
+    setTitle("");
+    setDescription("");
+  }
+
+  const handleSaveTodo = (e) => {
+    e.preventDefault();
+
+    const saveTodo = [...todo];
+    const newTodo = {
+      id: todo.length + 1,
+      title: title,
+      description: description,
+      date: `${date.getFullYear()}-${
+        date.getMonth() < 10 ? "0" + date.getMonth() : date.getMonth()
+      }-${date.getDate() < 10 ? "0" + date.getDate() : date.getDate()}`,
+      time: `${date.getHours()}-${
+        date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes()
+      }-${
+        date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds()
+      }`,
+    };
+
+    saveTodo.push(newTodo);
+    setTodo(saveTodo);
+    setIsForm(false);
+    handleClearInputs();
+  };
+
+  const handleDeleteTodo = (id) => {
+    const deleteTodo = todo.filter((item) => item.id !== id);
+    setTodo(deleteTodo);
+  };
+
+  const handleEditTodo = (id) => {
+    setIsForm(true);
+    setIsUpdate(true);
+    const editTodo = todo.filter((item) => item.id === id);
+    if (editTodo.length > 0) {
+      setId(id);
+      setTitle(editTodo[0].title);
+      setDescription(editTodo[0].description);
+    }
+  };
+
+  const handleUpdate = () => {
+    const todoIndex = todo
+      .map((item) => {
+        return item.id;
+      })
+      .indexOf(id);
+
+    const updateTodo = [...todo];
+    updateTodo[todoIndex].title = title;
+    updateTodo[todoIndex].description = description;
+    updateTodo[todoIndex].date = `${date.getFullYear()}-${
+      date.getMonth() < 10 ? "0" + date.getMonth() : date.getMonth()
+    }-${date.getDate() < 10 ? "0" + date.getDate() : date.getDate()}`;
+    updateTodo[todoIndex].time = `${date.getHours()}-${
+      date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes()
+    }-${date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds()}`;
+
+    setTodo(updateTodo);
+    setIsUpdate(false);
+    setIsForm(false);
+    handleClearInputs();
+  };
 
   return (
     <section
@@ -170,6 +186,8 @@ export const Todos = ({ active, setActive }) => {
               todo={todo}
               setTodo={setTodo}
               handleIsFormActive={handleIsFormActive}
+              deleteTodo={handleDeleteTodo}
+              editTodo={handleEditTodo}
             />
           )}
           {activeTab === "starred" && <Starred />}
@@ -203,6 +221,8 @@ export const Todos = ({ active, setActive }) => {
                 name="todo-title"
                 id="todo-title"
                 placeholder="Enter Title"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
                 required
               />
             </div>
@@ -219,16 +239,29 @@ export const Todos = ({ active, setActive }) => {
                 name="todo-title"
                 id="todo-title"
                 placeholder="Enter Description"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
                 required
               ></textarea>
             </div>
             <div className="w-full flex justify-center">
-              <button
-                className="w-32 h-10 text-todo-20 text-xl bg-todo-700 rounded-lg"
-                type="submit"
-              >
-                Save
-              </button>
+              {!isUpdate ? (
+                <button
+                  className="w-32 h-10 text-todo-20 text-xl bg-todo-700 rounded-lg"
+                  type="submit"
+                  onClick={(e) => handleSaveTodo(e)}
+                >
+                  Save
+                </button>
+              ) : (
+                <button
+                  className="w-32 h-10 text-todo-20 text-xl bg-todo-700 rounded-lg"
+                  type="submit"
+                  onClick={(e) => handleUpdate(e)}
+                >
+                  Update
+                </button>
+              )}
             </div>
           </form>
         </div>

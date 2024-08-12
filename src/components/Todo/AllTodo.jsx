@@ -1,6 +1,6 @@
 import { TodoCard } from "./TodoCard";
 
-export const AllTodo = ({ todo, setTodo, handleIsFormActive }) => {
+export const AllTodo = ({ todo, setTodo, handleIsFormActive, deleteTodo, editTodo }) => {
   return (
     <>
       <header className="w-full sm:flex sm:justify-between">
@@ -32,6 +32,8 @@ export const AllTodo = ({ todo, setTodo, handleIsFormActive }) => {
               description={item.description}
               date={item.date}
               time={item.time}
+              deleteTodo={deleteTodo}
+              editTodo={editTodo}
             />
           );
         })}
