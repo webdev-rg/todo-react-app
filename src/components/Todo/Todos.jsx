@@ -256,10 +256,10 @@ export const Todos = ({ active, setActive }) => {
           isForm ? "form-container" : "hidden"
         }`}
       >
-        <div className="absolute right-28 top-5" onClick={handleIsFormDisable}>
+        <div className="absolute right-5 sm:right-28 top-5" onClick={handleIsFormDisable}>
           <LiaTimesSolid className="text-2xl cursor-pointer" />
         </div>
-        <div className="w-[500px] px-5 py-7 bg-todo-20 border border-todo-700 rounded-2xl flex flex-col gap-3 relative">
+        <div className="w-[350px] sm:w-[500px] px-5 py-7 bg-todo-20 border border-todo-700 rounded-2xl flex flex-col gap-3 relative">
           <div className="text-center">
             <h1 className="text-2xl font-semibold text-todo-700">
               Add New Todo
