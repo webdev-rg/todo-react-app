@@ -2,7 +2,7 @@ import React from "react";
 import { GoTrash } from "react-icons/go";
 import { IoCloseOutline } from "react-icons/io5";
 
-export const CompletedTodoCard = ({ id, title, description, date, time, deleteTodo }) => {
+export const CompletedTodoCard = ({ id, title, description, date, time, deleteTodo, notCompleted }) => {
   return (
     <div className="w-full p-5 flex flex-col gap-5 bg-todo-20 border border-slate-300 rounded-2xl relative">
       <div className="title">
@@ -16,7 +16,9 @@ export const CompletedTodoCard = ({ id, title, description, date, time, deleteTo
           Date - {date} - Time - {time}
         </span>
         <div className="mt-2 flex items-center flex-wrap gap-2 sm:m-0">
-          <button className="px-4 py-2 flex items-center gap-1 bg-todo-700 rounded-md text-todo-20 hover:bg-todo-600 transition-all duration-200">
+          <button className="px-4 py-2 flex items-center gap-1 bg-todo-700 rounded-md text-todo-20 hover:bg-todo-600 transition-all duration-200"
+            onClick={() => notCompleted(id)}
+          >
             <IoCloseOutline className="text-xl" />
             Not Completed
           </button>

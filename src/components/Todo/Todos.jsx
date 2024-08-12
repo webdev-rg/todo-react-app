@@ -117,10 +117,6 @@ export const Todos = ({ active, setActive }) => {
             prevStarredTodos.filter((item) => item.id !== id)
           );
         }
-
-        setCompletedTodo((prevCompletedTodos) => {
-          prevCompletedTodos.filter((item) => item.id !== id);
-        });
       } else {
         console.error("Todo not found!");
       }
@@ -199,6 +195,25 @@ export const Todos = ({ active, setActive }) => {
 
       const updatedTodos = completedTodo.filter((item) => item.id !== id);
       setCompletedTodo(updatedTodos);
+    }
+  };
+
+  const handleNotCompleted = (id) => {
+    const notCompleted = completedTodo.find((item) => item.id === id);
+
+    if (notCompleted) {
+      setTodo([notCompleted, ...todo]);
+
+      setCompletedTodo((prevCompletedTodos) =>
+        prevCompletedTodos.filter((item) => item.id !== id)
+      );
+      
+      if (notCompleted.isStarred) {
+        setStarredTodo((prevStarredTodos) => [
+          notCompleted,
+          ...prevStarredTodos,
+        ]);
+      }
     }
   };
 
@@ -304,9 +319,10 @@ export const Todos = ({ active, setActive }) => {
             />
           )}
           {activeTab === "completed" && (
-            <Completed 
+            <Completed
               completedTodo={completedTodo}
-              deleteCompletedTodo={handleDeleteCompletedTodo}  
+              deleteCompletedTodo={handleDeleteCompletedTodo}
+              notCompleted={handleNotCompleted}
             />
           )}
           {activeTab === "deleted" && (

@@ -1,7 +1,7 @@
 import React from "react";
 import { CompletedTodoCard } from "./CompletedTodoCard";
 
-export const Completed = ({ completedTodo, deleteCompletedTodo }) => {
+export const Completed = ({ completedTodo, deleteCompletedTodo, notCompleted }) => {
   return (
     <>
       <header className="w-full sm:flex sm:justify-between">
@@ -32,6 +32,7 @@ export const Completed = ({ completedTodo, deleteCompletedTodo }) => {
               date={item.date}
               time={item.time}
               deleteTodo={deleteCompletedTodo}
+              notCompleted={notCompleted}
             />
           );
         })}
