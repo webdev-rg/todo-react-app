@@ -104,7 +104,7 @@ export const Todos = ({ active, setActive }) => {
 
     if (deletedItem) {
       setDeletedTodo((prevDeletedTodos) => {
-        const newDeletedTodos = [...prevDeletedTodos, deletedItem];
+        const newDeletedTodos = [deletedItem, ...prevDeletedTodos];
         return newDeletedTodos;
       });
 
@@ -119,11 +119,15 @@ export const Todos = ({ active, setActive }) => {
     const restoredItem = deletedTodo.find((item) => item.id === id);
 
     if (restoredItem) {
-      setTodo([...todo, restoredItem]);
+      setTodo([restoredItem, ...todo]);
       setDeletedTodo(deletedTodo.filter((item) => item.id !== id));
     } else {
       console.error("Error");
     }
+  };
+
+  const handleEmptyTrash = () => {
+    setDeletedTodo([]);
   };
 
   const handleCompletedTodo = (id) => {
@@ -241,6 +245,7 @@ export const Todos = ({ active, setActive }) => {
             <Deleted
               deletedTodo={deletedTodo}
               restoreTodo={handleRestoreDeletedTodo}
+              emptyTrash={handleEmptyTrash}
             />
           )}
         </div>
