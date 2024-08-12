@@ -110,6 +110,7 @@ export const Todos = ({ active, setActive }) => {
 
       const updatedTodos = todo.filter((item) => item.id !== id);
       setTodo(updatedTodos);
+      // setStarredTodo(updatedTodos);
     } else {
       console.error("Todo not found!");
     }
@@ -237,7 +238,16 @@ export const Todos = ({ active, setActive }) => {
               isStarred={isStarred}
             />
           )}
-          {activeTab === "starred" && <Starred starredTodo={starredTodo} />}
+          {activeTab === "starred" && (
+            <Starred
+              starredTodos={starredTodo}
+              completeTodo={handleCompletedTodo}
+              starredTodo={handleStarredTodo}
+              editTodo={handleEditTodo}
+              deleteTodo={handleDeleteTodo}
+              isStarred={isStarred}
+            />
+          )}
           {activeTab === "completed" && (
             <Completed completedTodo={completedTodo} />
           )}
@@ -256,7 +266,10 @@ export const Todos = ({ active, setActive }) => {
           isForm ? "form-container" : "hidden"
         }`}
       >
-        <div className="absolute right-5 sm:right-28 top-5" onClick={handleIsFormDisable}>
+        <div
+          className="absolute right-5 sm:right-28 top-5"
+          onClick={handleIsFormDisable}
+        >
           <LiaTimesSolid className="text-2xl cursor-pointer" />
         </div>
         <div className="w-[320px] sm:w-[500px] px-5 py-7 bg-todo-20 border border-todo-700 rounded-2xl flex flex-col gap-3 relative">
