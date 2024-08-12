@@ -1,7 +1,7 @@
 import React from "react";
 import { DeletedTodoCard } from "./DeletedTodoCard";
 
-export const Deleted = ({ deletedTodo, restoreTodo, emptyTrash }) => {
+export const Deleted = ({ deletedTodo, restoreTodo, emptyTrash, deletePermanantly }) => {
   return (
     <>
       <header className="w-full sm:flex sm:justify-between">
@@ -37,6 +37,7 @@ export const Deleted = ({ deletedTodo, restoreTodo, emptyTrash }) => {
               date={item.date}
               time={item.time}
               restoreTodo={restoreTodo}
+              deletePermanantly={deletePermanantly}
             />
           );
         })}

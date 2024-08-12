@@ -1,18 +1,10 @@
 import React from "react";
-import { GoCheckCircle } from "react-icons/go";
-import { MdOutlineSettingsBackupRestore } from "react-icons/md";
+import { GoTrash } from "react-icons/go";
+import { IoCloseOutline } from "react-icons/io5";
 
-export const DeletedTodoCard = ({
-  id,
-  title,
-  description,
-  date,
-  time,
-  restoreTodo,
-  deletePermanantly
-}) => {
+export const CompletedTodoCard = ({ id, title, description, date, time, deleteTodo }) => {
   return (
-    <div className="w-full p-5 flex flex-col gap-5 bg-todo-20 border border-slate-300 rounded-2xl">
+    <div className="w-full p-5 flex flex-col gap-5 bg-todo-20 border border-slate-300 rounded-2xl relative">
       <div className="title">
         <h2 className="text-xl font-semibold text-slate-950">{title}</h2>
       </div>
@@ -24,17 +16,15 @@ export const DeletedTodoCard = ({
           Date - {date} - Time - {time}
         </span>
         <div className="mt-2 flex items-center flex-wrap gap-2 sm:m-0">
-          <button
-            className="px-4 py-2 flex items-center gap-1 bg-todo-700 rounded-md text-todo-20 hover:bg-todo-600 transition-all duration-200"
-            onClick={() => restoreTodo(id)}
-          >
-            <MdOutlineSettingsBackupRestore />
-            Restore
+          <button className="px-4 py-2 flex items-center gap-1 bg-todo-700 rounded-md text-todo-20 hover:bg-todo-600 transition-all duration-200">
+            <IoCloseOutline className="text-xl" />
+            Not Completed
           </button>
           <button className="px-4 py-2 flex items-center gap-1 bg-red-700 rounded-md text-todo-20 hover:bg-red-600 transition-all duration-200"
-          onClick={() => deletePermanantly(id)}
+          onClick={() => deleteTodo(id)}
           >
-            Delete Permanently
+            <GoTrash />
+            Delete
           </button>
         </div>
       </div>

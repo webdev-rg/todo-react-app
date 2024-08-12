@@ -100,19 +100,30 @@ export const Todos = ({ active, setActive }) => {
   };
 
   const handleDeleteTodo = (id) => {
-    const deletedItem = todo.find((item) => item.id === id);
+    if (window.confirm("Are you sure you want to delete this todo?")) {
+      const deletedItem = todo.find((item) => item.id === id);
 
-    if (deletedItem) {
-      setDeletedTodo((prevDeletedTodos) => {
-        const newDeletedTodos = [deletedItem, ...prevDeletedTodos];
-        return newDeletedTodos;
-      });
+      if (deletedItem) {
+        setDeletedTodo((prevDeletedTodos) => {
+          const newDeletedTodos = [deletedItem, ...prevDeletedTodos];
+          return newDeletedTodos;
+        });
 
-      const updatedTodos = todo.filter((item) => item.id !== id);
-      setTodo(updatedTodos);
-      // setStarredTodo(updatedTodos);
-    } else {
-      console.error("Todo not found!");
+        const updatedTodos = todo.filter((item) => item.id !== id);
+        setTodo(updatedTodos);
+
+        if (deletedItem.isStarred) {
+          setStarredTodo((prevStarredTodos) =>
+            prevStarredTodos.filter((item) => item.id !== id)
+          );
+        }
+
+        setCompletedTodo((prevCompletedTodos) => {
+          prevCompletedTodos.filter((item) => item.id !== id);
+        });
+      } else {
+        console.error("Todo not found!");
+      }
     }
   };
 
@@ -122,13 +133,41 @@ export const Todos = ({ active, setActive }) => {
     if (restoredItem) {
       setTodo([restoredItem, ...todo]);
       setDeletedTodo(deletedTodo.filter((item) => item.id !== id));
+
+      if (restoredItem.isStarred) {
+        setStarredTodo((prevStarredTodos) => [
+          restoredItem,
+          ...prevStarredTodos,
+        ]);
+      }
     } else {
       console.error("Error");
     }
   };
 
+  const handleDeletePermanantly = (id) => {
+    if (
+      window.confirm("Are you sure you want to permanantly delete this todo?")
+    ) {
+      const deletedItem = deletedTodo.find((item) => item.id === id);
+
+      if (deletedItem) {
+        setDeletedTodo((prevDeletedTodos) => {
+          return prevDeletedTodos.filter((item) => item.id !== id);
+        });
+      } else {
+        console.error("Todo not found!");
+      }
+    }
+  };
+
   const handleEmptyTrash = () => {
-    setDeletedTodo([]);
+    if (window.confirm("Are you sure you empty trash?")) {
+      setCompletedTodo((prevCompletedTodos) => {
+        prevCompletedTodos.filter((item) => item.id !== id);
+      });
+      setDeletedTodo([]);
+    }
   };
 
   const handleCompletedTodo = (id) => {
@@ -144,6 +183,22 @@ export const Todos = ({ active, setActive }) => {
       setTodo(updatedTodos);
     } else {
       console.error("Todo not found!");
+    }
+  };
+
+  const handleDeleteCompletedTodo = (id) => {
+    if (window.confirm("Are you sure you want to delete this todo?")) {
+      const deletedItem = completedTodo.find((item) => item.id === id);
+
+      if (deletedItem) {
+        setDeletedTodo((prevDeletedTodos) => {
+          const newDeletedTodos = [deletedItem, ...prevDeletedTodos];
+          return newDeletedTodos;
+        });
+      }
+
+      const updatedTodos = completedTodo.filter((item) => item.id !== id);
+      setCompletedTodo(updatedTodos);
     }
   };
 
@@ -249,11 +304,15 @@ export const Todos = ({ active, setActive }) => {
             />
           )}
           {activeTab === "completed" && (
-            <Completed completedTodo={completedTodo} />
+            <Completed 
+              completedTodo={completedTodo}
+              deleteCompletedTodo={handleDeleteCompletedTodo}  
+            />
           )}
           {activeTab === "deleted" && (
             <Deleted
               deletedTodo={deletedTodo}
+              deletePermanantly={handleDeletePermanantly}
               restoreTodo={handleRestoreDeletedTodo}
               emptyTrash={handleEmptyTrash}
             />
