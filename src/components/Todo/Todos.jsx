@@ -170,10 +170,16 @@ export const Todos = ({ active, setActive }) => {
     const completedTodo = todo.find((item) => item.id === id);
 
     if (completedTodo) {
-      setCompletedTodo((prevCompletedTodos) => {
-        const newCompletedTodos = [...prevCompletedTodos, completedTodo];
-        return newCompletedTodos;
-      });
+      setCompletedTodo((prevCompletedTodos) => [
+        ...prevCompletedTodos,
+        completedTodo,
+      ]);
+
+      if (completedTodo.isStarred) {
+        setStarredTodo((prevStarredTodos) =>
+          prevStarredTodos.filter((item) => item.id !== id)
+        );
+      }
 
       const updatedTodos = todo.filter((item) => item.id !== id);
       setTodo(updatedTodos);
@@ -207,7 +213,7 @@ export const Todos = ({ active, setActive }) => {
       setCompletedTodo((prevCompletedTodos) =>
         prevCompletedTodos.filter((item) => item.id !== id)
       );
-      
+
       if (notCompleted.isStarred) {
         setStarredTodo((prevStarredTodos) => [
           notCompleted,
