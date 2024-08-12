@@ -121,11 +121,11 @@ export const Todos = ({ active, setActive }) => {
       className="w-full flex items-center justify-between relative"
     >
       <div
-        className={`w-full lg:w-[25%] md:w-[30%] sm:w-[50%] md:absolute md:left-0 absolute z-10 left-[-100%] h-full bg-slate-100 border-r-[1px] border-slate-400 p-5 left-side ${
+        className={`w-full lg:w-[25%] md:w-[30%] sm:w-[50%] md:absolute md:left-0 absolute z-10 left-[-100%] h-full bg-slate-100 border-r-[1px] border-slate-400 sm:p-5 left-side ${
           active ? "active" : ""
         }`}
       >
-        <div className="w-full h-full p-5 flex flex-col gap-2 bg-todo-20 rounded-2xl">
+        <div className="w-full h-full p-5 flex flex-col gap-2 bg-todo-20 sm:rounded-2xl">
           <ul className="w-full flex flex-col gap-4">
             <li
               className={`w-full flex items-center gap-3 px-5 py-[14px] hover:bg-slate-100 rounded-xl transition-all duration-200 cursor-pointer ${
