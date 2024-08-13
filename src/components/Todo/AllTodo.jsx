@@ -17,9 +17,9 @@ export const AllTodo = ({
           <h2 className="text-2xl font-semibold text-slate-900">
             You've{" "}
             <span className="text-todo-700">
-              {todo.length} Task{todo.length > 1 ? "s" : ""}
+              {todo.length} task{todo.length > 1 ? "s" : ""}
             </span>{" "}
-            Todo
+            todo
           </h2>
         </div>
         <div className="mt-3 sm:mt-0">

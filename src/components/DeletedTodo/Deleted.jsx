@@ -9,10 +9,10 @@ export const Deleted = ({ deletedTodo, restoreTodo, emptyTrash, deletePermanantl
           <h2 className="text-2xl font-semibold text-slate-900">
             {deletedTodo.length > 0 ? (
               <span className="text-todo-700">
-                {deletedTodo.length} Todo{deletedTodo.length > 1 ? "s" : ""}{" "}
+                {deletedTodo.length} task{deletedTodo.length > 1 ? "s" : ""}{" "}
               </span>
             ) : (
-              <span>No Todos </span>
+              <span>No tasks </span>
             )}
             in Trash
           </h2>

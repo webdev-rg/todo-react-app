@@ -16,12 +16,12 @@ export const Starred = ({
             {starredTodos.length > 0 ? (
               <>
                 <span className="text-todo-700">
-                  {starredTodos.length} todo{starredTodos.length > 1 ? "s" : ""}
+                  {starredTodos.length} task{starredTodos.length > 1 ? "s" : ""}
                 </span>{" "}
                 <span> marked as starred</span>
               </>
             ) : (
-              "No todos marked as starred"
+              "No tasks marked as starred"
             )}
           </h2>
         </div>

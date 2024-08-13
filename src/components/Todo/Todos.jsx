@@ -158,11 +158,15 @@ export const Todos = ({ active, setActive }) => {
   };
 
   const handleEmptyTrash = () => {
-    if (window.confirm("Are you sure you empty trash?")) {
-      setCompletedTodo((prevCompletedTodos) => {
-        prevCompletedTodos.filter((item) => item.id !== id);
-      });
-      setDeletedTodo([]);
+    if (deletedTodo.length > 0) {
+      if (window.confirm("Are you sure you empty trash?")) {
+        setCompletedTodo((prevCompletedTodos) => {
+          prevCompletedTodos.filter((item) => item.id !== id);
+        });
+        setDeletedTodo([]);
+      }
+    } else {
+      alert(`There are ${deletedTodo.length} task in trash`);
     }
   };
 
@@ -393,7 +397,7 @@ export const Todos = ({ active, setActive }) => {
                 required
               ></textarea>
             </div>
-            <div className="w-full flex justify-center">
+            <div className="w-full flex justify-end gap-3">
               {!isUpdate ? (
                 <button
                   className="w-32 h-10 text-todo-20 text-xl bg-todo-700 rounded-lg"
@@ -403,14 +407,23 @@ export const Todos = ({ active, setActive }) => {
                   Save
                 </button>
               ) : (
-                <button
-                  className="w-32 h-10 text-todo-20 text-xl bg-todo-700 rounded-lg"
-                  type="submit"
-                  onClick={(e) => handleUpdate(e)}
-                >
-                  Update
-                </button>
+                <>
+                  <button
+                    className="w-32 h-10 text-todo-20 text-xl bg-todo-700 rounded-lg"
+                    type="submit"
+                    onClick={(e) => handleUpdate(e)}
+                  >
+                    Update
+                  </button>
+                </>
               )}
+              <button
+                className="px-4 py-2 flex items-center gap-1 bg-red-700 rounded-md text-todo-20 hover:bg-red-600 transition-all duration-200"
+                onClick={handleClearInputs}
+                type="button"
+              >
+                Clear Form
+              </button>
             </div>
           </form>
         </div>
