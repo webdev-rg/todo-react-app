@@ -8,6 +8,8 @@ import { AllTodo } from "./AllTodo";
 import { Completed } from "../CompletedTodo/Completed";
 import { Deleted } from "../DeletedTodo/Deleted";
 import { Starred } from "../StarredTodo/Starred";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export const Todos = ({ active, setActive }) => {
   const sectionHeight = {
@@ -63,6 +65,17 @@ export const Todos = ({ active, setActive }) => {
     setTodo(saveTodo);
     setIsForm(false);
     handleClearInputs();
+
+    toast.success("One task added", {
+      position: "top-right",
+      autoClose: 1500,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: false,
+      progress: undefined,
+      theme: "light",
+    });
   };
 
   const handleEditTodo = (id) => {
@@ -97,6 +110,17 @@ export const Todos = ({ active, setActive }) => {
     setIsUpdate(false);
     setIsForm(false);
     handleClearInputs();
+
+    toast.success("Task updated successfully", {
+      position: "top-right",
+      autoClose: 1500,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: false,
+      progress: undefined,
+      theme: "light",
+    });
   };
 
   const handleDeleteTodo = (id) => {
@@ -120,6 +144,16 @@ export const Todos = ({ active, setActive }) => {
       } else {
         console.error("Todo not found!");
       }
+      toast.warn("One task deleted", {
+        position: "top-right",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: false,
+        progress: undefined,
+        theme: "light",
+      });
     }
   };
 
@@ -136,6 +170,16 @@ export const Todos = ({ active, setActive }) => {
           ...prevStarredTodos,
         ]);
       }
+      toast.success("Task restored", {
+        position: "top-right",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: false,
+        progress: undefined,
+        theme: "light",
+      });
     } else {
       console.error("Error");
     }
@@ -154,6 +198,17 @@ export const Todos = ({ active, setActive }) => {
       } else {
         console.error("Todo not found!");
       }
+
+      toast.error("Task deleted permanantly", {
+        position: "top-right",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: false,
+        progress: undefined,
+        theme: "light",
+      });
     }
   };
 
@@ -164,6 +219,16 @@ export const Todos = ({ active, setActive }) => {
           prevCompletedTodos.filter((item) => item.id !== id);
         });
         setDeletedTodo([]);
+        toast.info("All tasks deleted", {
+          position: "top-right",
+          autoClose: 1500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: false,
+          progress: undefined,
+          theme: "light",
+        });
       }
     } else {
       alert(`There are ${deletedTodo.length} task in trash`);
@@ -187,6 +252,17 @@ export const Todos = ({ active, setActive }) => {
 
       const updatedTodos = todo.filter((item) => item.id !== id);
       setTodo(updatedTodos);
+
+      toast.success("One task completed", {
+        position: "top-right",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: false,
+        progress: undefined,
+        theme: "light",
+      });
     } else {
       console.error("Todo not found!");
     }
@@ -205,6 +281,17 @@ export const Todos = ({ active, setActive }) => {
 
       const updatedTodos = completedTodo.filter((item) => item.id !== id);
       setCompletedTodo(updatedTodos);
+
+      toast.warn("One task deleted", {
+        position: "top-right",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: false,
+        progress: undefined,
+        theme: "light",
+      });
     }
   };
 
@@ -224,6 +311,17 @@ export const Todos = ({ active, setActive }) => {
           ...prevStarredTodos,
         ]);
       }
+
+      toast.success("Task restored", {
+        position: "top-right",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: false,
+        progress: undefined,
+        theme: "light",
+      });
     }
   };
 
@@ -238,196 +336,210 @@ export const Todos = ({ active, setActive }) => {
 
     const newStarredTodos = updatedTodos.filter((item) => item.isStarred);
     setStarredTodo(newStarredTodos);
+
+    toast.info("Task marked as starred", {
+      position: "top-right",
+      autoClose: 1500,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: false,
+      progress: undefined,
+      theme: "light",
+    });
   };
 
   return (
-    <section
-      style={sectionHeight}
-      className="w-full flex items-center justify-between relative"
-    >
-      <div
-        className={`w-full lg:w-[25%] md:w-[30%] sm:w-[50%] md:absolute md:left-0 absolute z-10 left-[-100%] h-full bg-slate-100 border-r-[1px] border-slate-400 sm:p-5 left-side ${
-          active ? "active" : ""
-        }`}
-      >
-        <div className="w-full h-full p-5 flex flex-col gap-2 bg-todo-20 sm:rounded-2xl">
-          <ul className="w-full flex flex-col gap-4">
-            <li
-              className={`w-full flex items-center gap-3 px-5 py-[14px] hover:bg-slate-100 rounded-xl transition-all duration-200 cursor-pointer ${
-                activeTab === "all" ? "active" : ""
-              }`}
-              onClick={() => {
-                setActiveTab("all");
-                setActive(false);
-              }}
-            >
-              <LuLayoutDashboard className="text-xl" />
-              <span className="text-xl font-medium">All Todos</span>
-            </li>
-            <li
-              className={`w-full flex items-center gap-3 px-5 py-[14px] hover:bg-slate-100 rounded-xl transition-all duration-200 cursor-pointer ${
-                activeTab === "starred" ? "active" : ""
-              }`}
-              onClick={() => {
-                setActiveTab("starred");
-                setActive(false);
-              }}
-            >
-              <FaRegStar className="text-xl" />
-              <span className="text-xl font-medium">Starred</span>
-            </li>
-            <li
-              className={`w-full flex items-center gap-3 px-5 py-[14px] hover:bg-slate-100 rounded-xl transition-all duration-200 cursor-pointer ${
-                activeTab === "completed" ? "active" : ""
-              }`}
-              onClick={() => {
-                setActiveTab("completed");
-                setActive(false);
-              }}
-            >
-              <FaRegCheckCircle className="text-xl" />{" "}
-              <span className="text-xl font-medium">Completed</span>
-            </li>
-            <li
-              className={`w-full flex items-center gap-3 px-5 py-[14px] hover:bg-slate-100 rounded-xl transition-all duration-200 cursor-pointer ${
-                activeTab === "deleted" ? "active" : ""
-              }`}
-              onClick={() => {
-                setActiveTab("deleted");
-                setActive(false);
-              }}
-            >
-              <LuTrash2 className="text-xl" />{" "}
-              <span className="text-xl font-medium">Trash</span>
-            </li>
-          </ul>
-        </div>
-      </div>
-
-      <div className="lg:w-[75%] lg:absolute lg:left-[25%] md:w-[70%] md:absolute md:left-[30%] w-full h-full bg-slate-100 border-r-[1px] border-slate-300 sm:p-5 right-side">
-        <div className="w-full h-full p-5 flex flex-col gap-5 bg-todo-20 sm:rounded-2xl">
-          {activeTab === "all" && (
-            <AllTodo
-              todo={todo}
-              setTodo={setTodo}
-              handleIsFormActive={handleIsFormActive}
-              completeTodo={handleCompletedTodo}
-              starredTodo={handleStarredTodo}
-              editTodo={handleEditTodo}
-              deleteTodo={handleDeleteTodo}
-              isStarred={isStarred}
-            />
-          )}
-          {activeTab === "starred" && (
-            <Starred
-              starredTodos={starredTodo}
-              completeTodo={handleCompletedTodo}
-              starredTodo={handleStarredTodo}
-              editTodo={handleEditTodo}
-              deleteTodo={handleDeleteTodo}
-              isStarred={isStarred}
-            />
-          )}
-          {activeTab === "completed" && (
-            <Completed
-              completedTodo={completedTodo}
-              deleteCompletedTodo={handleDeleteCompletedTodo}
-              notCompleted={handleNotCompleted}
-            />
-          )}
-          {activeTab === "deleted" && (
-            <Deleted
-              deletedTodo={deletedTodo}
-              deletePermanantly={handleDeletePermanantly}
-              restoreTodo={handleRestoreDeletedTodo}
-              emptyTrash={handleEmptyTrash}
-            />
-          )}
-        </div>
-      </div>
-      <div
+    <>
+      <ToastContainer />
+      <section
         style={sectionHeight}
-        className={`w-full flex items-center justify-center bg-todo-20 absolute z-20 ${
-          isForm ? "form-container" : "hidden"
-        }`}
+        className="w-full flex items-center justify-between relative"
       >
         <div
-          className="absolute right-5 sm:right-28 top-5"
-          onClick={handleIsFormDisable}
+          className={`w-full lg:w-[25%] md:w-[30%] sm:w-[50%] md:absolute md:left-0 absolute z-10 left-[-100%] h-full bg-slate-100 border-r-[1px] border-slate-400 sm:p-5 left-side ${
+            active ? "active" : ""
+          }`}
         >
-          <LiaTimesSolid className="text-2xl cursor-pointer" />
-        </div>
-        <div className="w-[320px] sm:w-[500px] px-5 py-7 bg-todo-20 border border-todo-700 rounded-2xl flex flex-col gap-3 relative">
-          <div className="text-center">
-            <h1 className="text-2xl font-semibold text-todo-700">
-              Add New Todo
-            </h1>
-          </div>
-          <form className="w-full flex flex-col gap-5">
-            <div className="flex flex-col gap-2">
-              <label className="text-xl font-semibold" htmlFor="todo-title">
-                Title
-              </label>
-              <input
-                className="w-full h-14 border px-3 text-lg focus:border-todo-700 valid:border-todo-700 border-slate-400 rounded-xl transition-all duration-200"
-                type="text"
-                name="todo-title"
-                id="todo-title"
-                placeholder="Enter Title"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                required
-              />
-            </div>
-            <div className="flex flex-col gap-2">
-              <label
-                className="text-xl font-semibold"
-                htmlFor="todo-description"
+          <div className="w-full h-full p-5 flex flex-col gap-2 bg-todo-20 sm:rounded-2xl">
+            <ul className="w-full flex flex-col gap-4">
+              <li
+                className={`w-full flex items-center gap-3 px-5 py-[14px] hover:bg-slate-100 rounded-xl transition-all duration-200 cursor-pointer ${
+                  activeTab === "all" ? "active" : ""
+                }`}
+                onClick={() => {
+                  setActiveTab("all");
+                  setActive(false);
+                }}
               >
-                Description
-              </label>
-              <textarea
-                className="w-full h-32 border p-3 text-lg focus:border-todo-700 valid:border-todo-700 border-slate-400 rounded-xl transition-all duration-200"
-                type="text"
-                name="todo-title"
-                id="todo-title"
-                placeholder="Enter Description"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                required
-              ></textarea>
+                <LuLayoutDashboard className="text-xl" />
+                <span className="text-xl font-medium">All Todos</span>
+              </li>
+              <li
+                className={`w-full flex items-center gap-3 px-5 py-[14px] hover:bg-slate-100 rounded-xl transition-all duration-200 cursor-pointer ${
+                  activeTab === "starred" ? "active" : ""
+                }`}
+                onClick={() => {
+                  setActiveTab("starred");
+                  setActive(false);
+                }}
+              >
+                <FaRegStar className="text-xl" />
+                <span className="text-xl font-medium">Starred</span>
+              </li>
+              <li
+                className={`w-full flex items-center gap-3 px-5 py-[14px] hover:bg-slate-100 rounded-xl transition-all duration-200 cursor-pointer ${
+                  activeTab === "completed" ? "active" : ""
+                }`}
+                onClick={() => {
+                  setActiveTab("completed");
+                  setActive(false);
+                }}
+              >
+                <FaRegCheckCircle className="text-xl" />{" "}
+                <span className="text-xl font-medium">Completed</span>
+              </li>
+              <li
+                className={`w-full flex items-center gap-3 px-5 py-[14px] hover:bg-slate-100 rounded-xl transition-all duration-200 cursor-pointer ${
+                  activeTab === "deleted" ? "active" : ""
+                }`}
+                onClick={() => {
+                  setActiveTab("deleted");
+                  setActive(false);
+                }}
+              >
+                <LuTrash2 className="text-xl" />{" "}
+                <span className="text-xl font-medium">Trash</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div className="lg:w-[75%] lg:absolute lg:left-[25%] md:w-[70%] md:absolute md:left-[30%] w-full h-full bg-slate-100 border-r-[1px] border-slate-300 sm:p-5 right-side">
+          <div className="w-full h-full p-5 flex flex-col gap-5 bg-todo-20 sm:rounded-2xl">
+            {activeTab === "all" && (
+              <AllTodo
+                todo={todo}
+                setTodo={setTodo}
+                handleIsFormActive={handleIsFormActive}
+                completeTodo={handleCompletedTodo}
+                starredTodo={handleStarredTodo}
+                editTodo={handleEditTodo}
+                deleteTodo={handleDeleteTodo}
+                isStarred={isStarred}
+              />
+            )}
+            {activeTab === "starred" && (
+              <Starred
+                starredTodos={starredTodo}
+                completeTodo={handleCompletedTodo}
+                starredTodo={handleStarredTodo}
+                editTodo={handleEditTodo}
+                deleteTodo={handleDeleteTodo}
+                isStarred={isStarred}
+              />
+            )}
+            {activeTab === "completed" && (
+              <Completed
+                completedTodo={completedTodo}
+                deleteCompletedTodo={handleDeleteCompletedTodo}
+                notCompleted={handleNotCompleted}
+              />
+            )}
+            {activeTab === "deleted" && (
+              <Deleted
+                deletedTodo={deletedTodo}
+                deletePermanantly={handleDeletePermanantly}
+                restoreTodo={handleRestoreDeletedTodo}
+                emptyTrash={handleEmptyTrash}
+              />
+            )}
+          </div>
+        </div>
+        <div
+          style={sectionHeight}
+          className={`w-full flex items-center justify-center bg-todo-20 absolute z-20 ${
+            isForm ? "form-container" : "hidden"
+          }`}
+        >
+          <div
+            className="absolute right-5 sm:right-28 top-5"
+            onClick={handleIsFormDisable}
+          >
+            <LiaTimesSolid className="text-2xl cursor-pointer" />
+          </div>
+          <div className="w-[320px] sm:w-[500px] px-5 py-7 bg-todo-20 border border-todo-700 rounded-2xl flex flex-col gap-3 relative">
+            <div className="text-center">
+              <h1 className="text-2xl font-semibold text-todo-700">
+                Add New Todo
+              </h1>
             </div>
-            <div className="w-full flex justify-end gap-3">
-              {!isUpdate ? (
-                <button
-                  className="w-32 h-10 text-todo-20 text-xl bg-todo-700 rounded-lg"
-                  type="submit"
-                  onClick={(e) => handleSaveTodo(e)}
+            <form className="w-full flex flex-col gap-5">
+              <div className="flex flex-col gap-2">
+                <label className="text-xl font-semibold" htmlFor="todo-title">
+                  Title
+                </label>
+                <input
+                  className="w-full h-14 border px-3 text-lg focus:border-todo-700 valid:border-todo-700 border-slate-400 rounded-xl transition-all duration-200"
+                  type="text"
+                  name="todo-title"
+                  id="todo-title"
+                  placeholder="Enter Title"
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                  required
+                />
+              </div>
+              <div className="flex flex-col gap-2">
+                <label
+                  className="text-xl font-semibold"
+                  htmlFor="todo-description"
                 >
-                  Save
-                </button>
-              ) : (
-                <>
+                  Description
+                </label>
+                <textarea
+                  className="w-full h-32 border p-3 text-lg focus:border-todo-700 valid:border-todo-700 border-slate-400 rounded-xl transition-all duration-200"
+                  type="text"
+                  name="todo-title"
+                  id="todo-title"
+                  placeholder="Enter Description"
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  required
+                ></textarea>
+              </div>
+              <div className="w-full flex justify-end gap-3">
+                {!isUpdate ? (
                   <button
                     className="w-32 h-10 text-todo-20 text-xl bg-todo-700 rounded-lg"
                     type="submit"
-                    onClick={(e) => handleUpdate(e)}
+                    onClick={(e) => handleSaveTodo(e)}
                   >
-                    Update
+                    Save
                   </button>
-                </>
-              )}
-              <button
-                className="px-4 py-2 flex items-center gap-1 bg-red-700 rounded-md text-todo-20 hover:bg-red-600 transition-all duration-200"
-                onClick={handleClearInputs}
-                type="button"
-              >
-                Clear Form
-              </button>
-            </div>
-          </form>
+                ) : (
+                  <>
+                    <button
+                      className="w-32 h-10 text-todo-20 text-xl bg-todo-700 rounded-lg"
+                      type="submit"
+                      onClick={(e) => handleUpdate(e)}
+                    >
+                      Update
+                    </button>
+                  </>
+                )}
+                <button
+                  className="px-4 py-2 flex items-center gap-1 bg-red-700 rounded-md text-todo-20 hover:bg-red-600 transition-all duration-200"
+                  onClick={handleClearInputs}
+                  type="button"
+                >
+                  Clear Form
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </>
   );
 };
