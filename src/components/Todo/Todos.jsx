@@ -561,7 +561,7 @@ const TodoForm = ({
                   Description
                 </label>
                 <textarea
-                  className="w-full h-32 px-3 py-2 mt-3 text-slate-900 border border-slate-400 focus:border-todo-700 valid:border-b valid:border-todo-700 rounded-2xl resize-none transition-all duration-200"
+                  className="w-full h-32 px-3 py-2 mt-3 text-slate-900 border border-slate-400 focus:bg-todo-50 focus:border-todo-700 valid:border-b valid:border-todo-700 rounded-2xl resize-none transition-all duration-200"
                   placeholder="Task description"
                   id="task-description"
                   value={desc}
