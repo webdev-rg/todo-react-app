@@ -11,7 +11,6 @@ export const App = () => {
   };
   return (
     <>
-      <Header active={active} toggleActive={toggleActive} />
       <Todos active={active} setActive={setActive} />
     </>
   );

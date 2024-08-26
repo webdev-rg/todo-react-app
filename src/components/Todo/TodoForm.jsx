@@ -3,7 +3,7 @@ import React from "react";
 export const TodoForm = () => {
   return (
     <>
-      <div
+      {/* <div
         className={`w-full h-screen flex items-center justify-center bg-todo-20 absolute z-20`}
       >
         <div className="w-[500px] p-5 bg-todo-20 border border-todo-700 rounded-2xl flex flex-col gap-3">
@@ -52,7 +52,18 @@ export const TodoForm = () => {
             </div>
           </form>
         </div>
-      </div>
+      </div> */}
+
+      {/* <section className="w-full h-screen p-20 bg-todo-20 flex justify-center">
+        <div className="w-full h-full flex justify-center">
+          <form className="w-[800px] h-full">
+            <div>
+              <label htmlFor="title">Title</label>
+              <input type="text" name="title" id="title" placeholder="Enter Title" />
+            </div>
+          </form>
+        </div>
+      </section> */}
     </>
   );
 };

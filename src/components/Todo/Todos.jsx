@@ -1,4 +1,7 @@
 import { useState } from "react";
+import logo from "../../assets/images/logo.svg";
+import { CgMenuRight } from "react-icons/cg";
+
 import { LiaTimesSolid } from "react-icons/lia";
 import { LuLayoutDashboard, LuTrash2 } from "react-icons/lu";
 import { FaRegStar } from "react-icons/fa";
@@ -11,9 +14,15 @@ import { Starred } from "../StarredTodo/Starred";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-export const Todos = ({ active, setActive }) => {
+export const Todos = () => {
   const sectionHeight = {
     height: "calc(100vh - 80px)",
+  };
+
+  const [active, setActive] = useState(false);
+
+  const toggleActive = () => {
+    setActive((prevActive) => !prevActive);
   };
 
   const [isForm, setIsForm] = useState(false);
@@ -23,15 +32,6 @@ export const Todos = ({ active, setActive }) => {
   const [id, setId] = useState(0);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-
-  const handleIsFormActive = () => {
-    setIsForm(!isForm);
-  };
-  const handleIsFormDisable = () => {
-    setIsForm(!isForm);
-  };
-
-  const date = new Date();
 
   const [todo, setTodo] = useState([]);
   const [deletedTodo, setDeletedTodo] = useState([]);
@@ -43,39 +43,13 @@ export const Todos = ({ active, setActive }) => {
     setDescription("");
   };
 
-  const handleSaveTodo = (e) => {
-    e.preventDefault();
-
-    const newTodo = {
-      id: todo.length + 1,
-      title: title,
-      description: description,
-      date: `${date.getFullYear()}-${
-        date.getMonth() < 10 ? "0" + date.getMonth() : date.getMonth()
-      }-${date.getDate() < 10 ? "0" + date.getDate() : date.getDate()}`,
-      time: `${date.getHours()}-${
-        date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes()
-      }-${
-        date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds()
-      }`,
-      isStarred: false,
-    };
-
-    const saveTodo = [...todo, newTodo];
-    setTodo(saveTodo);
+  const handleIsFormActive = () => {
+    setIsForm(true);
+  };
+  const handleIsFormDisable = () => {
     setIsForm(false);
+    setIsUpdate(false);
     handleClearInputs();
-
-    toast.success("One task added", {
-      position: "top-right",
-      autoClose: 1500,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: false,
-      progress: undefined,
-      theme: "light",
-    });
   };
 
   const handleEditTodo = (id) => {
@@ -87,40 +61,6 @@ export const Todos = ({ active, setActive }) => {
       setTitle(editTodo[0].title);
       setDescription(editTodo[0].description);
     }
-  };
-
-  const handleUpdate = () => {
-    const todoIndex = todo
-      .map((item) => {
-        return item.id;
-      })
-      .indexOf(id);
-
-    const updateTodo = [...todo];
-    updateTodo[todoIndex].title = title;
-    updateTodo[todoIndex].description = description;
-    updateTodo[todoIndex].date = `${date.getFullYear()}-${
-      date.getMonth() < 10 ? "0" + date.getMonth() : date.getMonth()
-    }-${date.getDate() < 10 ? "0" + date.getDate() : date.getDate()}`;
-    updateTodo[todoIndex].time = `${date.getHours()}-${
-      date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes()
-    }-${date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds()}`;
-
-    setTodo(updateTodo);
-    setIsUpdate(false);
-    setIsForm(false);
-    handleClearInputs();
-
-    toast.success("Task updated successfully", {
-      position: "top-right",
-      autoClose: 1500,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: false,
-      progress: undefined,
-      theme: "light",
-    });
   };
 
   const handleDeleteTodo = (id) => {
@@ -352,6 +292,17 @@ export const Todos = ({ active, setActive }) => {
   return (
     <>
       <ToastContainer />
+      <header className="w-full h-20 px-5 flex items-end justify-between bg-todo-20 border-b-[1px] border-slate-400">
+        <div className="h-20 flex items-center">
+          <img className="w-28" src={logo} alt="logo" />
+        </div>
+        <div className="h-20 md:hidden flex items-center">
+          <CgMenuRight
+            className="text-3xl cursor-pointer"
+            onClick={toggleActive}
+          />
+        </div>
+      </header>
       <section
         style={sectionHeight}
         className="w-full flex items-center justify-between relative"
@@ -456,88 +407,197 @@ export const Todos = ({ active, setActive }) => {
             )}
           </div>
         </div>
-        <div
-          style={sectionHeight}
-          className={`w-full flex items-center justify-center bg-todo-20 absolute z-20 ${
-            isForm ? "form-container" : "hidden"
-          }`}
-        >
-          <div
-            className="absolute right-5 sm:right-28 top-5"
-            onClick={handleIsFormDisable}
-          >
-            <LiaTimesSolid className="text-2xl cursor-pointer" />
-          </div>
-          <div className="w-[320px] sm:w-[500px] px-5 py-7 bg-todo-20 border border-todo-700 rounded-2xl flex flex-col gap-3 relative">
-            <div className="text-center">
-              <h1 className="text-2xl font-semibold text-todo-700">
-                Add New Todo
-              </h1>
+      </section>
+      {isForm ? (
+        <TodoForm
+          closeForm={handleIsFormDisable}
+          clearForm={handleClearInputs}
+          isUpdate={isUpdate}
+          setIsUpdate={setIsUpdate}
+          todo={todo}
+          setTodo={setTodo}
+          setIsForm={setIsForm}
+          id={id}
+          title={title}
+          setTitle={setTitle}
+          desc={description}
+          setDesc={setDescription}
+        />
+      ) : null}
+    </>
+  );
+};
+
+//? Add Todo Form
+
+const TodoForm = ({
+  closeForm,
+  clearForm,
+  isUpdate,
+  setIsUpdate,
+  todo,
+  setTodo,
+  setIsForm,
+  id,
+  title,
+  setTitle,
+  desc,
+  setDesc,
+}) => {
+  const date = new Date();
+
+  const handleSaveTodo = (e) => {
+    e.preventDefault();
+
+    const newTodo = {
+      id: todo.length + 1,
+      title: title,
+      description: desc,
+      date: `${date.getFullYear()}-${
+        date.getMonth() < 10 ? "0" + date.getMonth() : date.getMonth()
+      }-${date.getDate() < 10 ? "0" + date.getDate() : date.getDate()}`,
+      time: `${date.getHours()}-${
+        date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes()
+      }-${
+        date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds()
+      }`,
+      isStarred: false,
+    };
+
+    const saveTodo = [...todo, newTodo];
+    setTodo(saveTodo);
+    setIsForm(false);
+    clearForm();
+
+    toast.success("One task added", {
+      position: "top-right",
+      autoClose: 1500,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: false,
+      progress: undefined,
+      theme: "light",
+    });
+  };
+
+  const handleUpdate = (e) => {
+    e.preventDefault();
+    const todoIndex = todo
+      .map((item) => {
+        return item.id;
+      })
+      .indexOf(id);
+
+    const updateTodo = [...todo];
+    updateTodo[todoIndex].title = title;
+    updateTodo[todoIndex].description = desc;
+    updateTodo[todoIndex].date = `${date.getFullYear()}-${
+      date.getMonth() < 10 ? "0" + date.getMonth() : date.getMonth()
+    }-${date.getDate() < 10 ? "0" + date.getDate() : date.getDate()}`;
+    updateTodo[todoIndex].time = `${date.getHours()}-${
+      date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes()
+    }-${date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds()}`;
+
+    setTodo(updateTodo);
+    setIsUpdate(false);
+    setIsForm(false);
+    clearForm();
+
+    toast.success("Task updated successfully", {
+      position: "top-right",
+      autoClose: 1500,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: false,
+      progress: undefined,
+      theme: "light",
+    });
+  };
+
+  return (
+    <>
+      <section className="absolute top-0 left-0 w-full h-screen p-20 bg-todo-blur-bg z-20">
+        <div className="w-[700px] bg-todo-20 p-7 rounded-2xl mx-auto relative">
+          <div className="flex justify-between">
+            <h1 className="text-xl font-semibold text-todo-700">
+              Add New Task
+            </h1>
+            <div
+              className="w-10 h-10 flex items-center justify-center bg-todo-50 rounded-xl cursor-pointer hover:border hover:border-todo-700 transition-all duration-100"
+              onClick={closeForm}
+            >
+              <LiaTimesSolid className="text-xl text-slate-800" />
             </div>
-            <form className="w-full flex flex-col gap-5">
-              <div className="flex flex-col gap-2">
-                <label className="text-xl font-semibold" htmlFor="todo-title">
+          </div>
+
+          <form>
+            <div className="flex flex-col gap-7 mt-7">
+              <div className="w-full">
+                <label
+                  htmlFor="task-title"
+                  className="text-lg font-medium text-slate-900"
+                >
                   Title
                 </label>
                 <input
-                  className="w-full h-14 border px-3 text-lg focus:border-todo-700 valid:border-todo-700 border-slate-400 rounded-xl transition-all duration-200"
                   type="text"
-                  name="todo-title"
-                  id="todo-title"
-                  placeholder="Enter Title"
+                  className="w-full h-16 px-3 mt-3 text-xl font-semibold placeholder:font-normal text-slate-900 focus:bg-todo-50 border rounded-2xl border-slate-400 focus:border-todo-700 valid:border-b valid:border-todo-700 transition-all duration-200"
+                  placeholder="Task title"
+                  id="task-title"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                   required
+                  autoFocus
                 />
               </div>
-              <div className="flex flex-col gap-2">
+
+              <div className="w-full">
                 <label
-                  className="text-xl font-semibold"
-                  htmlFor="todo-description"
+                  htmlFor="task-description"
+                  className="text-lg font-medium text-slate-900"
                 >
                   Description
                 </label>
                 <textarea
-                  className="w-full h-32 border p-3 text-lg focus:border-todo-700 valid:border-todo-700 border-slate-400 rounded-xl transition-all duration-200"
-                  type="text"
-                  name="todo-title"
-                  id="todo-title"
-                  placeholder="Enter Description"
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
+                  className="w-full h-32 px-3 py-2 mt-3 text-slate-900 border border-slate-400 focus:border-todo-700 valid:border-b valid:border-todo-700 rounded-2xl resize-none transition-all duration-200"
+                  placeholder="Task description"
+                  id="task-description"
+                  value={desc}
+                  onChange={(e) => setDesc(e.target.value)}
                   required
                 ></textarea>
               </div>
-              <div className="w-full flex justify-end gap-3">
-                {!isUpdate ? (
-                  <button
-                    className="w-32 h-10 text-todo-20 text-xl bg-todo-700 rounded-lg"
-                    type="submit"
-                    onClick={(e) => handleSaveTodo(e)}
-                  >
-                    Save
-                  </button>
-                ) : (
-                  <>
-                    <button
-                      className="w-32 h-10 text-todo-20 text-xl bg-todo-700 rounded-lg"
-                      type="submit"
-                      onClick={(e) => handleUpdate(e)}
-                    >
-                      Update
-                    </button>
-                  </>
-                )}
+            </div>
+
+            <div className="w-full flex justify-end gap-3 mt-7">
+              {!isUpdate ? (
                 <button
-                  className="px-4 py-2 flex items-center gap-1 bg-red-700 rounded-md text-todo-20 hover:bg-red-600 transition-all duration-200"
-                  onClick={handleClearInputs}
-                  type="button"
+                  className="w-32 h-10 text-todo-20 text-xl bg-todo-700 hover:bg-todo-600 rounded-lg transition-all duration-200"
+                  onClick={handleSaveTodo}
                 >
-                  Clear Form
+                  Save
                 </button>
-              </div>
-            </form>
-          </div>
+              ) : (
+                <button
+                  className="w-32 h-10 text-todo-20 text-xl bg-todo-700 hover:bg-todo-600 rounded-lg transition-all duration-200"
+                  type="button"
+                  onClick={handleUpdate}
+                >
+                  Update
+                </button>
+              )}
+
+              <button
+                className="w-32 h-10 text-todo-20 text-xl bg-red-700 hover:bg-red-600 rounded-lg transition-all duration-200"
+                type="button"
+                onClick={clearForm}
+              >
+                Clear
+              </button>
+            </div>
+          </form>
         </div>
       </section>
     </>

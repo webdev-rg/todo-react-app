@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { TodoCard } from "./TodoCard";
 
 export const AllTodo = ({
@@ -23,8 +24,14 @@ export const AllTodo = ({
           </h2>
         </div>
         <div className="mt-3 sm:mt-0">
+          {/* <Link
+            className="inline-block text-center leading-[48px] w-40 h-12 bg-todo-700 text-todo-20 rounded-lg font-medium hover:bg-todo-600 transition-all duration-200"
+            to={"/addtodo"}
+          >
+            Add New Todo
+          </Link> */}
           <button
-            className="w-40 h-12 bg-todo-700 text-todo-20 rounded-lg font-medium hover:bg-todo-600 transition-all duration-200"
+            className="inline-block text-center leading-[48px] w-40 h-12 bg-todo-700 text-todo-20 rounded-lg font-medium hover:bg-todo-600 transition-all duration-200"
             onClick={handleIsFormActive}
           >
             Add New Todo

@@ -16,6 +16,7 @@ export default {
         "todo-800": "#451abd",
         "todo-900": "#3a179b",
         "todo-950": "#210c69",
+        "todo-blur-bg": "rgba(71, 85, 105, 0.5)",
       },
     },
   },
