@@ -518,7 +518,7 @@ const TodoForm = ({
 
   return (
     <>
-      <section className="absolute top-0 left-0 w-full h-screen md:p-20 py-20 px-10 bg-todo-blur-bg z-20">
+      <section className="absolute top-0 left-0 w-full h-screen md:p-20 py-20 sm:px-10 px-5 bg-todo-blur-bg z-20">
         <div className="md:w-[700px] bg-todo-20 p-7 rounded-2xl mx-auto relative">
           <div className="flex justify-between">
             <h1 className="text-xl font-semibold text-todo-700">
